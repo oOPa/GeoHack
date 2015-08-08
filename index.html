@@ -53,8 +53,8 @@
         // 1370729 is the OSM ID for the relation of the building used in this
         // example, it can be viewed online here:
         //   http://www.openstreetmap.org/relation/1370729
-	var site = '[out:json][timeout:25];(way["name"="Queen Mary (University of London)"];);out body;>;out skel qt;';
-
+	var site = '[out:json][timeout:25];(way["name"="University of Essex"];);out body;>;out skel qt;';
+	
         $.get("//overpass-api.de/api/interpreter?data=" + site, function(data) {
 
             var geoJSON = osmtogeojson(data, {
