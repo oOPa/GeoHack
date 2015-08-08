@@ -66,6 +66,43 @@
  
 	L.geoJson(geoJSON).addTo(map);
 
+
+            var buildings = '[out:json];(node(poly:"'
+
+            var pointStrings = []
+            geoJSON.features[0].geometry.coordinates[0].forEach(function(point) {
+                pointStrings.push(point[1] + " " + point[0]);
+            });
+
+            buildings += pointStrings.join(" ");
+
+            buildings += '");<;node(w););out;';
+
+            console.log(buildings);
+
+            $.get("//overpass-api.de/api/interpreter?data=" + buildings, function(data) {
+
+                var geoJSON = osmtogeojson(data, {
+                    polygonFeatures: {
+                        buildingpart: true
+                    }
+                });
+
+                console.log(geoJSON);
+
+                L.geoJson(geoJSON, {
+                    filter: function(feature, layer) {
+                        console.log(feature);
+
+                        if (feature.properties.tags.building == null) {
+                            return false;
+                        }
+
+                        return true;
+                    },
+                }).addTo(map);
+            });
+
         });
 
     </script>
